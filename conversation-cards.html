@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>101 Conversation Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script>
+var state = { filter: 'all', search: '' };
+function filterBy(intensity, btn) {
+  state.filter = intensity;
+  var btns = document.querySelectorAll('.fbtn');
+  for (var i = 0; i < btns.length; i++) btns[i].className = btns[i].className.replace(' active', '');
+  btn.className += ' active';
+  applyFilters();
+}
+function onSearch(value) {
+  state.search = (value || '').toLowerCase().trim();
+  applyFilters();
+}
+function applyFilters() {
+  // Filter the grid
+  var gridCards = document.querySelectorAll('.card');
+  var visible = 0;
+  for (var i = 0; i < gridCards.length; i++) {
+    var c = gridCards[i];
+    var ok = (state.filter === 'all' || c.getAttribute('data-intensity') === state.filter) &&
+             (state.search === '' || c.getAttribute('data-search').indexOf(state.search) !== -1);
+    c.style.display = ok ? '' : 'none';
+    if (ok) visible++;
+  }
+  // Filter the carousel - same logic
+  var carSlides = document.querySelectorAll('.carousel-slide');
+  for (var i = 0; i < carSlides.length; i++) {
+    var s = carSlides[i];
+    var ok = (state.filter === 'all' || s.getAttribute('data-intensity') === state.filter) &&
+             (state.search === '' || s.getAttribute('data-search').indexOf(state.search) !== -1);
+    s.style.display = ok ? '' : 'none';
+  }
+  // Reset carousel scroll to start when filter changes
+  var track = document.getElementById('carTrack');
+  if (track) {
+    track.scrollLeft = 0;
+    updateCarPosition();
+  }
+  var rc = document.getElementById('rc');
+  if (rc) rc.textContent = visible === gridCards.length ? 'Showing all ' + gridCards.length + ' cards' :
+                          visible === 0 ? 'No matches' :
+                          'Showing ' + visible + ' of ' + gridCards.length + ' cards';
+}
+function carPrev() {
+  var track = document.getElementById('carTrack');
+  if (!track) return;
+  var slide = track.querySelector('.carousel-slide');
+  if (!slide) return;
+  var w = slide.getBoundingClientRect().width + 16; // gap
+  track.scrollBy({ left: -w, behavior: 'smooth' });
+}
+function carNext() {
+  var track = document.getElementById('carTrack');
+  if (!track) return;
+  var slide = track.querySelector('.carousel-slide');
+  if (!slide) return;
+  var w = slide.getBoundingClientRect().width + 16;
+  track.scrollBy({ left: w, behavior: 'smooth' });
+}
+function updateCarPosition() {
+  var track = document.getElementById('carTrack');
+  var pos = document.getElementById('carPos');
+  if (!track || !pos) return;
+  var visible = [];
+  var slides = track.querySelectorAll('.carousel-slide');
+  for (var i = 0; i < slides.length; i++) {
+    if (slides[i].style.display !== 'none') visible.push(slides[i]);
+  }
+  if (visible.length === 0) { pos.textContent = '0 / 0'; return; }
+  var first = visible[0];
+  var w = first.getBoundingClientRect().width + 16;
+  var idx = Math.round(track.scrollLeft / w);
+  if (idx < 0) idx = 0;
+  if (idx >= visible.length) idx = visible.length - 1;
+  pos.textContent = (idx + 1) + ' / ' + visible.length;
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:'DM Sans',-apple-system,sans-serif;color:#0C1A2E;background:#F5F7FA;line-height:1.5;-webkit-text-size-adjust:100%}
+.hero{background:linear-gradient(135deg,#FF4E7C 0%,#FF8C94 100%);color:white;padding:48px 20px 40px;text-align:center}
+.hero .brand{font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin:0 0 16px;opacity:.95}
+.hero h1{font-family:'Merriweather',serif;font-size:32px;line-height:1.1;font-weight:900;margin:0 0 12px;text-transform:uppercase}
+.hero .tag{font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:600;opacity:.95;margin:0}
+.counts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:480px;margin:28px auto 0}
+.count{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:14px 10px}
+.count .n{font-family:'Merriweather',serif;font-size:28px;font-weight:900;display:block;line-height:1}
+.count .l{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-top:6px}
+.intro{max-width:720px;margin:36px auto 24px;padding:0 20px}
+.intro h2{font-family:'Merriweather',serif;font-size:22px;text-align:center;margin:0 0 16px}
+.intro p{color:#4a5568;margin:0 0 12px}
+.controls{max-width:920px;margin:24px auto 16px;padding:0 16px}
+.search{width:100%;padding:14px 18px;font-size:16px;font-family:inherit;border:2px solid #E3E6F0;border-radius:999px;background:white;outline:none;margin-bottom:14px;-webkit-appearance:none}
+.search:focus{border-color:#FF4E7C}
+.filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.fbtn{cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;padding:10px 14px;border-radius:999px;border:2px solid #E3E6F0;background:white;color:#4A5D7A;-webkit-appearance:none;-webkit-tap-highlight-color:rgba(255,78,124,0.3);touch-action:manipulation}
+.fbtn.active{background:#FF4E7C;color:white;border-color:#FF4E7C}
+.fbtn.active[data-intensity="Light"]{background:#1AC6C5;border-color:#1AC6C5;color:#0C1A2E}
+.fbtn.active[data-intensity="Medium"]{background:#4A5D7A;border-color:#4A5D7A;color:white}
+.fbtn.active[data-intensity="Deep"]{background:#0C1A2E;border-color:#0C1A2E;color:white}
+.fbtn.active[data-intensity="Spicy"]{background:#FF8C94;border-color:#FF8C94;color:white}
+.rc{text-align:center;font-size:13px;color:#6b7280;margin:16px 0 12px}
+
+/* Mobile carousel section - shown only on small screens */
+.carousel-section{display:none;background:linear-gradient(135deg,#FF4E7C 0%,#FF8C94 100%);padding:20px 0 18px;margin:8px 0 0;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+@media (max-width:767px){.carousel-section{display:block}}
+.carousel-section h3{font-family:'Merriweather',serif;color:#fff;font-size:17px;text-align:center;margin:0 0 2px;text-transform:uppercase;letter-spacing:.8px}
+.carousel-section .car-sub{text-align:center;color:#fff;font-size:11px;margin:0 0 12px;opacity:.92;letter-spacing:.3px}
+.carousel-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;gap:16px;padding:4px 16px 14px;scrollbar-width:none}
+.carousel-track::-webkit-scrollbar{display:none}
+.carousel-slide{flex:0 0 calc(100vw - 48px);scroll-snap-align:center;background:#fff;border-radius:14px;padding:18px 20px 20px;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.slide-num{font-size:11px;font-weight:700;letter-spacing:1.5px;color:#6b7280;text-transform:uppercase;margin:0}
+.slide-q{font-family:'Merriweather',serif;font-size:22px;line-height:1.35;color:#0C1A2E;font-weight:700;margin:8px 0 14px}
+.slide-tag{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding-top:12px;margin:0;border-top:1px solid #f0f0f0}
+.car-controls{display:flex;justify-content:center;align-items:center;gap:18px;padding:8px 20px 0}
+.car-arrow{width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.95);color:#FF4E7C;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.12);-webkit-appearance:none;touch-action:manipulation}
+.car-arrow:active{background:#fff;transform:scale(.96)}
+.car-pos{color:#fff;font-weight:700;font-size:14px;min-width:60px;text-align:center}
+
+.grid{max-width:1240px;margin:14px auto 60px;padding:0 16px;display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:700px){.grid{grid-template-columns:repeat(2,1fr);gap:16px;padding:0 20px}}
+@media (min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-direction:column}
+.card-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-size:12px;font-weight:700;letter-spacing:.8px}
+.card-body{padding:18px 16px 20px;flex:1}
+.card-q{font-family:'Merriweather',serif;font-size:18px;font-weight:700;line-height:1.35;margin:0 0 12px;color:#0C1A2E}
+.card-tag{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#FF4E7C;font-weight:700;margin:0}
+.footer{background:#0C1A2E;color:rgba(255,255,255,.85);text-align:center;padding:28px 20px;font-size:13px}
+.footer a{color:#FF8C94;text-decoration:none}
+</style>
+</head>
+<body>
+<header class="hero">
+  <p class="brand">Conversation Cards</p>
+  <h1>101<br>Conversation<br>Starters</h1>
+  <p class="tag">Deepen Your Connection. One Question At A Time.</p>
+  <div class="counts">
+    <div class="count" style="background:#1AC6C5;color:#0C1A2E;"><span class="n">30</span><div class="l">😊 Fun & Easy</div></div>
+    <div class="count" style="background:#4A5D7A;color:white;"><span class="n">28</span><div class="l">💭 Meaningful</div></div>
+    <div class="count" style="background:#0C1A2E;color:white;"><span class="n">26</span><div class="l">💜 Deep</div></div>
+    <div class="count" style="background:#FF8C94;color:white;"><span class="n">17</span><div class="l">😘 Flirty</div></div>
+  </div>
+</header>
+<section class="intro">
+  <h2>How To Use Your Cards</h2>
+  <p>Search by keyword, tap a category, or scroll the full collection. Pick one and answer it together.</p>
+</section>
+<div class="controls">
+  <input type="text" class="search" placeholder="Search questions..." oninput="onSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+  <div class="filters">
+    <button type="button" class="fbtn active" data-intensity="all" onclick="filterBy('all', this)">All Cards</button>
+    <button type="button" class="fbtn" data-intensity="Light" onclick="filterBy('Light', this)">😊 Fun & Easy</button>
+    <button type="button" class="fbtn" data-intensity="Medium" onclick="filterBy('Medium', this)">💭 Meaningful</button>
+    <button type="button" class="fbtn" data-intensity="Deep" onclick="filterBy('Deep', this)">💜 Deep</button>
+    <button type="button" class="fbtn" data-intensity="Spicy" onclick="filterBy('Spicy', this)">😘 Flirty</button>
+  </div>
+  <p class="rc" id="rc">Showing all 101 cards</p>
+</div>
+
+<section class="carousel-section">
+  <h3>Browse One at a Time</h3>
+  <p class="car-sub">Swipe or tap arrows to flip through</p>
+  <div class="carousel-track" id="carTrack" onscroll="updateCarPosition()">
+<div class="carousel-slide" data-intensity="Spicy" data-search="how can we make everyday moments more flirtatious? flirty" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #1</div>
+      <div class="slide-q">How can we make everyday moments more flirtatious?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if our love had a theme song that played when we entered a room, what would it be? fun" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #2</div>
+      <div class="slide-q">If our love had a theme song that played when we entered a room, what would it be?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what’s one thing you’re afraid to want? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #3</div>
+      <div class="slide-q">What’s one thing you’re afraid to want?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what’s one way i can better show you grace this week? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #4</div>
+      <div class="slide-q">What’s one way I can better show you grace this week?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what does &amp;#x27;becoming a team&amp;#x27; mean to you practically? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #5</div>
+      <div class="slide-q">What does &#x27;becoming a team&#x27; mean to you practically?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="how do you wish i responded when you’re upset or triggered? emotional support" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #6</div>
+      <div class="slide-q">How do you wish I responded when you’re upset or triggered?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what&amp;#x27;s the deepest fear you carry about our future together? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #7</div>
+      <div class="slide-q">What&#x27;s the deepest fear you carry about our future together?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="if we had a personal mission statement, what would it say? vision" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #8</div>
+      <div class="slide-q">If we had a personal mission statement, what would it say?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what does putting each other first look like in our marriage? reflection" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #9</div>
+      <div class="slide-q">What does putting each other first look like in our marriage?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="what&amp;#x27;s the most attractive thing i do without realizing it? attraction" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #10</div>
+      <div class="slide-q">What&#x27;s the most attractive thing I do without realizing it?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what’s something you admire about me but don’t say often? affirmation" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #11</div>
+      <div class="slide-q">What’s something you admire about me but don’t say often?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you most need to be loved when you&amp;#x27;re stressed or overwhelmed? emotional support" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #12</div>
+      <div class="slide-q">How do you most need to be loved when you&#x27;re stressed or overwhelmed?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we could teleport anywhere for lunch today, where would we go? fun" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #13</div>
+      <div class="slide-q">If we could teleport anywhere for lunch today, where would we go?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s one thing about our relationship that would surprise people who don&amp;#x27;t know us well? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #14</div>
+      <div class="slide-q">What&#x27;s one thing about our relationship that would surprise people who don&#x27;t know us well?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we hosted a dinner party, which three couples would make the perfect guest list? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #15</div>
+      <div class="slide-q">If we hosted a dinner party, which three couples would make the perfect guest list?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what secret do you keep to protect me that actually hurts us? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #16</div>
+      <div class="slide-q">What secret do you keep to protect me that actually hurts us?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how can i love you better when you’re stressed? connection" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #17</div>
+      <div class="slide-q">How can I love you better when you’re stressed?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="how has our trust been tested through trials together? reflection" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #18</div>
+      <div class="slide-q">How has our trust been tested through trials together?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s one compliment you love receiving from me? affirmation" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #19</div>
+      <div class="slide-q">What&#x27;s one compliment you love receiving from me?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="how do you want to be desired by me? attraction" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #20</div>
+      <div class="slide-q">How do you want to be desired by me?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you know when i&amp;#x27;m struggling even if i don&amp;#x27;t say anything? emotional support" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #21</div>
+      <div class="slide-q">How do you know when I&#x27;m struggling even if I don&#x27;t say anything?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if you could steal one of my skills or talents, which would it be? affirmation" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #22</div>
+      <div class="slide-q">If you could steal one of my skills or talents, which would it be?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what&amp;#x27;s one way we could serve others together? vision" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #23</div>
+      <div class="slide-q">What&#x27;s one way we could serve others together?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what&amp;#x27;s one area of our relationship where you&amp;#x27;d like to see us grow together? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #24</div>
+      <div class="slide-q">What&#x27;s one area of our relationship where you&#x27;d like to see us grow together?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="if we wrote a steamy romance novel about us, what would the title be? flirty" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #25</div>
+      <div class="slide-q">If we wrote a steamy romance novel about us, what would the title be?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how can we keep our friendship strong within our marriage? connection" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #26</div>
+      <div class="slide-q">How can we keep our friendship strong within our marriage?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="how have i failed to protect your heart? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #27</div>
+      <div class="slide-q">How have I failed to protect your heart?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s the silliest thing we&amp;#x27;ve ever argued about that makes you laugh now? fun" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #28</div>
+      <div class="slide-q">What&#x27;s the silliest thing we&#x27;ve ever argued about that makes you laugh now?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="if you could rename me with a loving nickname, what would it be? flirty" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #29</div>
+      <div class="slide-q">If you could rename me with a loving nickname, what would it be?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s one thing you&amp;#x27;ve learned about love from being with me? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #30</div>
+      <div class="slide-q">What&#x27;s one thing you&#x27;ve learned about love from being with me?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what conversation do we keep avoiding that&amp;#x27;s poisoning us? connection" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #31</div>
+      <div class="slide-q">What conversation do we keep avoiding that&#x27;s poisoning us?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s one inside joke you&amp;#x27;d love to create with me? fun" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #32</div>
+      <div class="slide-q">What&#x27;s one inside joke you&#x27;d love to create with me?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="when do you feel safest with me? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #33</div>
+      <div class="slide-q">When do you feel safest with me?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we could volunteer together anywhere, where would you want to help? vision" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #34</div>
+      <div class="slide-q">If we could volunteer together anywhere, where would you want to help?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what does emotional safety mean to you in our relationship? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #35</div>
+      <div class="slide-q">What does emotional safety mean to you in our relationship?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what part of aging together scares you most? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #36</div>
+      <div class="slide-q">What part of aging together scares you most?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what worldly pattern do we need to resist together? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #37</div>
+      <div class="slide-q">What worldly pattern do we need to resist together?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we could master one recipe together, what should it be? real-life" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #38</div>
+      <div class="slide-q">If we could master one recipe together, what should it be?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you want us to grow together deeply? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #39</div>
+      <div class="slide-q">How do you want us to grow together deeply?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what’s a childhood wound you’re still healing from? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #40</div>
+      <div class="slide-q">What’s a childhood wound you’re still healing from?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you want to handle major disappointments together? emotional support" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #41</div>
+      <div class="slide-q">How do you want to handle major disappointments together?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we could learn any language together, which would you choose and why? growth" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #42</div>
+      <div class="slide-q">If we could learn any language together, which would you choose and why?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you want to keep growing individually while growing together? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #43</div>
+      <div class="slide-q">How do you want to keep growing individually while growing together?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you want to grow old and still feel sexy together? vision" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #44</div>
+      <div class="slide-q">How do you want to grow old and still feel sexy together?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="what&amp;#x27;s the most creative date idea you&amp;#x27;ve been secretly hoping we&amp;#x27;d try? romance" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #45</div>
+      <div class="slide-q">What&#x27;s the most creative date idea you&#x27;ve been secretly hoping we&#x27;d try?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how can i better understand your work stress? emotional support" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #46</div>
+      <div class="slide-q">How can I better understand your work stress?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what role do you see trust playing in our major life decisions? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #47</div>
+      <div class="slide-q">What role do you see trust playing in our major life decisions?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how can we better balance togetherness and independence? real-life" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #48</div>
+      <div class="slide-q">How can we better balance togetherness and independence?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we had one weekend with no kids or responsibilities, what wild thing would you want us to do? fun" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #49</div>
+      <div class="slide-q">If we had one weekend with no kids or responsibilities, what wild thing would you want us to do?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we made a romantic playlist, what’s the #1 song that belongs on it — and why? fun" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #50</div>
+      <div class="slide-q">If we made a romantic playlist, what’s the #1 song that belongs on it — and why?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what does healthy conflict resolution look like to you? real-life" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #51</div>
+      <div class="slide-q">What does healthy conflict resolution look like to you?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what have you given up trying to change about me? growth" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #52</div>
+      <div class="slide-q">What have you given up trying to change about me?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s your favorite &amp;#x27;boring&amp;#x27; evening we&amp;#x27;ve spent together? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #53</div>
+      <div class="slide-q">What&#x27;s your favorite &#x27;boring&#x27; evening we&#x27;ve spent together?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="when do you use humor to avoid real intimacy with me? intimacy" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #54</div>
+      <div class="slide-q">When do you use humor to avoid real intimacy with me?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what deeper discipline or rhythm would you love to build into our life? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #55</div>
+      <div class="slide-q">What deeper discipline or rhythm would you love to build into our life?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="how can we make our kisses feel like the first time again? romance" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #56</div>
+      <div class="slide-q">How can we make our kisses feel like the first time again?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="when have you felt most disappointed in who i&amp;#x27;ve become? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #57</div>
+      <div class="slide-q">When have you felt most disappointed in who I&#x27;ve become?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="when you see other couples, what makes you grateful for what we have? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #58</div>
+      <div class="slide-q">When you see other couples, what makes you grateful for what we have?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we could freeze one moment from our relationship to relive anytime, which would you choose? nostalgia" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #59</div>
+      <div class="slide-q">If we could freeze one moment from our relationship to relive anytime, which would you choose?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="when have you been tempted to give up on us? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #60</div>
+      <div class="slide-q">When have you been tempted to give up on us?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="when do you feel like i love an idea of you rather than the real you? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #61</div>
+      <div class="slide-q">When do you feel like I love an idea of you rather than the real you?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what does retirement look like in your dreams? vision" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #62</div>
+      <div class="slide-q">What does retirement look like in your dreams?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what legacy do you want our love story to leave? vision" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #63</div>
+      <div class="slide-q">What legacy do you want our love story to leave?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if our relationship had a soundtrack, what would the mood be right now? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #64</div>
+      <div class="slide-q">If our relationship had a soundtrack, what would the mood be right now?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what’s one way i can better protect your peace this week? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #65</div>
+      <div class="slide-q">What’s one way I can better protect your peace this week?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="what&amp;#x27;s your favorite season to experience with me and why? romance" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #66</div>
+      <div class="slide-q">What&#x27;s your favorite season to experience with me and why?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you process big emotions, and how can i help? emotional support" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #67</div>
+      <div class="slide-q">How do you process big emotions, and how can I help?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what’s something you secretly wish we did more often — but haven’t brought up? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #68</div>
+      <div class="slide-q">What’s something you secretly wish we did more often — but haven’t brought up?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we could have dinner with any couple from history, who would you choose? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #69</div>
+      <div class="slide-q">If we could have dinner with any couple from history, who would you choose?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you recharge when you&amp;#x27;re emotionally drained? emotional support" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #70</div>
+      <div class="slide-q">How do you recharge when you&#x27;re emotionally drained?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we could have any animal as a pet that represents our relationship, what would it be? fun" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #71</div>
+      <div class="slide-q">If we could have any animal as a pet that represents our relationship, what would it be?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you feel about the way we manage stress together? real-life" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #72</div>
+      <div class="slide-q">How do you feel about the way we manage stress together?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="what’s something we used to do before kids that you miss? real-life" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #73</div>
+      <div class="slide-q">What’s something we used to do before kids that you miss?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="how has our relationship made you smaller instead of bigger? growth" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #74</div>
+      <div class="slide-q">How has our relationship made you smaller instead of bigger?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s something i&amp;#x27;m good at that i don&amp;#x27;t give myself enough credit for? affirmation" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #75</div>
+      <div class="slide-q">What&#x27;s something I&#x27;m good at that I don&#x27;t give myself enough credit for?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we won a free renovation for one room, which would you pick? real-life" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #76</div>
+      <div class="slide-q">If we won a free renovation for one room, which would you pick?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what inside joke of ours never fails to make you smile? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #77</div>
+      <div class="slide-q">What inside joke of ours never fails to make you smile?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what kind of emotional support do you wish i gave more? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #78</div>
+      <div class="slide-q">What kind of emotional support do you wish I gave more?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="if desire had a color, what color would ours be? attraction" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #79</div>
+      <div class="slide-q">If desire had a color, what color would ours be?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s your favorite photo of us and why? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #80</div>
+      <div class="slide-q">What&#x27;s your favorite photo of us and why?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what addiction or struggle are you battling in secret? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #81</div>
+      <div class="slide-q">What addiction or struggle are you battling in secret?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="how has my success or failure affected your identity? growth" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #82</div>
+      <div class="slide-q">How has my success or failure affected your identity?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what’s something you fear would make me love you less? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #83</div>
+      <div class="slide-q">What’s something you fear would make me love you less?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="when do you find me most irresistibly attractive? attraction" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #84</div>
+      <div class="slide-q">When do you find me most irresistibly attractive?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s your favorite way to be greeted when you come home? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #85</div>
+      <div class="slide-q">What&#x27;s your favorite way to be greeted when you come home?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="what makes you feel most masculine/feminine in our relationship? attraction" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #86</div>
+      <div class="slide-q">What makes you feel most masculine/feminine in our relationship?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you experience grace in our relationship? growth" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #87</div>
+      <div class="slide-q">How do you experience grace in our relationship?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="what’s a dream date we’ve never done — even if it’s a little crazy? romance" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #88</div>
+      <div class="slide-q">What’s a dream date we’ve never done — even if it’s a little crazy?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what boundary do i consistently violate? real-life" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #89</div>
+      <div class="slide-q">What boundary do I consistently violate?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="how has my love fallen short of what you need? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #90</div>
+      <div class="slide-q">How has my love fallen short of what you need?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we opened a food truck together, what would we serve and what would we call it? fun" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #91</div>
+      <div class="slide-q">If we opened a food truck together, what would we serve and what would we call it?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="what&amp;#x27;s your favorite way we&amp;#x27;re different from each other? connection" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #92</div>
+      <div class="slide-q">What&#x27;s your favorite way we&#x27;re different from each other?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Medium" data-search="how do you want to navigate major health challenges together? real-life" style="border-top:6px solid #4A5D7A;">
+      <div class="slide-num">CARD #93</div>
+      <div class="slide-q">How do you want to navigate major health challenges together?</div>
+      <div class="slide-tag" style="color:#4A5D7A;">💭 Meaningful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we could swap one chore permanently, which would you want to trade? real-life" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #94</div>
+      <div class="slide-q">If we could swap one chore permanently, which would you want to trade?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Light" data-search="if we could start any business together tomorrow, what would it be? vision" style="border-top:6px solid #1AC6C5;">
+      <div class="slide-num">CARD #95</div>
+      <div class="slide-q">If we could start any business together tomorrow, what would it be?</div>
+      <div class="slide-tag" style="color:#1AC6C5;">😊 Fun & Easy</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what would you change about me if you could? vulnerability" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #96</div>
+      <div class="slide-q">What would you change about me if you could?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="what’s one non-sexual way you feel closest to me? intimacy" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #97</div>
+      <div class="slide-q">What’s one non-sexual way you feel closest to me?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="if we could relive our honeymoon phase for a day, what would you want to do? romance" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #98</div>
+      <div class="slide-q">If we could relive our honeymoon phase for a day, what would you want to do?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Deep" data-search="what do you need forgiveness for that you&amp;#x27;ve never asked? reflection" style="border-top:6px solid #0C1A2E;">
+      <div class="slide-num">CARD #99</div>
+      <div class="slide-q">What do you need forgiveness for that you&#x27;ve never asked?</div>
+      <div class="slide-tag" style="color:#0C1A2E;">💜 Deep & Vulnerable</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="what&amp;#x27;s your favorite text or note i&amp;#x27;ve ever sent you? romance" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #100</div>
+      <div class="slide-q">What&#x27;s your favorite text or note I&#x27;ve ever sent you?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+<div class="carousel-slide" data-intensity="Spicy" data-search="what’s a place you’ve always wanted to take me — and why? romance" style="border-top:6px solid #FF8C94;">
+      <div class="slide-num">CARD #101</div>
+      <div class="slide-q">What’s a place you’ve always wanted to take me — and why?</div>
+      <div class="slide-tag" style="color:#FF8C94;">😘 Flirty & Playful</div>
+    </div>
+  </div>
+  <div class="car-controls">
+    <button type="button" class="car-arrow" onclick="carPrev()" aria-label="Previous">←</button>
+    <span class="car-pos" id="carPos">1 / 101</span>
+    <button type="button" class="car-arrow" onclick="carNext()" aria-label="Next">→</button>
+  </div>
+</section>
+
+<section class="grid">
+<article class="card" data-intensity="Spicy" data-search="how can we make everyday moments more flirtatious? flirty">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #1</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How can we make everyday moments more flirtatious?</h3>
+        <p class="card-tag">Flirty</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if our love had a theme song that played when we entered a room, what would it be? fun">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #2</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If our love had a theme song that played when we entered a room, what would it be?</h3>
+        <p class="card-tag">Fun</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what’s one thing you’re afraid to want? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #3</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s one thing you’re afraid to want?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what’s one way i can better show you grace this week? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #4</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s one way I can better show you grace this week?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what does &amp;#x27;becoming a team&amp;#x27; mean to you practically? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #5</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What does &#x27;becoming a team&#x27; mean to you practically?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="how do you wish i responded when you’re upset or triggered? emotional support">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #6</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you wish I responded when you’re upset or triggered?</h3>
+        <p class="card-tag">Emotional Support</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what&amp;#x27;s the deepest fear you carry about our future together? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #7</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s the deepest fear you carry about our future together?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="if we had a personal mission statement, what would it say? vision">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #8</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we had a personal mission statement, what would it say?</h3>
+        <p class="card-tag">Vision</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what does putting each other first look like in our marriage? reflection">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #9</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What does putting each other first look like in our marriage?</h3>
+        <p class="card-tag">Reflection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="what&amp;#x27;s the most attractive thing i do without realizing it? attraction">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #10</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s the most attractive thing I do without realizing it?</h3>
+        <p class="card-tag">Attraction</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what’s something you admire about me but don’t say often? affirmation">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #11</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s something you admire about me but don’t say often?</h3>
+        <p class="card-tag">Affirmation</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you most need to be loved when you&amp;#x27;re stressed or overwhelmed? emotional support">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #12</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you most need to be loved when you&#x27;re stressed or overwhelmed?</h3>
+        <p class="card-tag">Emotional Support</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we could teleport anywhere for lunch today, where would we go? fun">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #13</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could teleport anywhere for lunch today, where would we go?</h3>
+        <p class="card-tag">Fun</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s one thing about our relationship that would surprise people who don&amp;#x27;t know us well? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #14</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s one thing about our relationship that would surprise people who don&#x27;t know us well?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we hosted a dinner party, which three couples would make the perfect guest list? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #15</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we hosted a dinner party, which three couples would make the perfect guest list?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what secret do you keep to protect me that actually hurts us? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #16</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What secret do you keep to protect me that actually hurts us?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how can i love you better when you’re stressed? connection">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #17</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How can I love you better when you’re stressed?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="how has our trust been tested through trials together? reflection">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #18</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How has our trust been tested through trials together?</h3>
+        <p class="card-tag">Reflection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s one compliment you love receiving from me? affirmation">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #19</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s one compliment you love receiving from me?</h3>
+        <p class="card-tag">Affirmation</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="how do you want to be desired by me? attraction">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #20</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you want to be desired by me?</h3>
+        <p class="card-tag">Attraction</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you know when i&amp;#x27;m struggling even if i don&amp;#x27;t say anything? emotional support">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #21</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you know when I&#x27;m struggling even if I don&#x27;t say anything?</h3>
+        <p class="card-tag">Emotional Support</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if you could steal one of my skills or talents, which would it be? affirmation">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #22</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If you could steal one of my skills or talents, which would it be?</h3>
+        <p class="card-tag">Affirmation</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what&amp;#x27;s one way we could serve others together? vision">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #23</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s one way we could serve others together?</h3>
+        <p class="card-tag">Vision</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what&amp;#x27;s one area of our relationship where you&amp;#x27;d like to see us grow together? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #24</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s one area of our relationship where you&#x27;d like to see us grow together?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="if we wrote a steamy romance novel about us, what would the title be? flirty">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #25</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we wrote a steamy romance novel about us, what would the title be?</h3>
+        <p class="card-tag">Flirty</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how can we keep our friendship strong within our marriage? connection">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #26</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How can we keep our friendship strong within our marriage?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="how have i failed to protect your heart? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #27</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How have I failed to protect your heart?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s the silliest thing we&amp;#x27;ve ever argued about that makes you laugh now? fun">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #28</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s the silliest thing we&#x27;ve ever argued about that makes you laugh now?</h3>
+        <p class="card-tag">Fun</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="if you could rename me with a loving nickname, what would it be? flirty">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #29</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If you could rename me with a loving nickname, what would it be?</h3>
+        <p class="card-tag">Flirty</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s one thing you&amp;#x27;ve learned about love from being with me? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #30</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s one thing you&#x27;ve learned about love from being with me?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what conversation do we keep avoiding that&amp;#x27;s poisoning us? connection">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #31</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What conversation do we keep avoiding that&#x27;s poisoning us?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s one inside joke you&amp;#x27;d love to create with me? fun">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #32</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s one inside joke you&#x27;d love to create with me?</h3>
+        <p class="card-tag">Fun</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="when do you feel safest with me? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #33</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">When do you feel safest with me?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we could volunteer together anywhere, where would you want to help? vision">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #34</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could volunteer together anywhere, where would you want to help?</h3>
+        <p class="card-tag">Vision</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what does emotional safety mean to you in our relationship? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #35</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What does emotional safety mean to you in our relationship?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what part of aging together scares you most? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #36</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What part of aging together scares you most?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what worldly pattern do we need to resist together? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #37</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What worldly pattern do we need to resist together?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we could master one recipe together, what should it be? real-life">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #38</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could master one recipe together, what should it be?</h3>
+        <p class="card-tag">Real-Life</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you want us to grow together deeply? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #39</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you want us to grow together deeply?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what’s a childhood wound you’re still healing from? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #40</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s a childhood wound you’re still healing from?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you want to handle major disappointments together? emotional support">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #41</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you want to handle major disappointments together?</h3>
+        <p class="card-tag">Emotional Support</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we could learn any language together, which would you choose and why? growth">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #42</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could learn any language together, which would you choose and why?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you want to keep growing individually while growing together? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #43</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you want to keep growing individually while growing together?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you want to grow old and still feel sexy together? vision">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #44</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you want to grow old and still feel sexy together?</h3>
+        <p class="card-tag">Vision</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="what&amp;#x27;s the most creative date idea you&amp;#x27;ve been secretly hoping we&amp;#x27;d try? romance">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #45</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s the most creative date idea you&#x27;ve been secretly hoping we&#x27;d try?</h3>
+        <p class="card-tag">Romance</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how can i better understand your work stress? emotional support">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #46</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How can I better understand your work stress?</h3>
+        <p class="card-tag">Emotional Support</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what role do you see trust playing in our major life decisions? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #47</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What role do you see trust playing in our major life decisions?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how can we better balance togetherness and independence? real-life">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #48</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How can we better balance togetherness and independence?</h3>
+        <p class="card-tag">Real-Life</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we had one weekend with no kids or responsibilities, what wild thing would you want us to do? fun">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #49</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we had one weekend with no kids or responsibilities, what wild thing would you want us to do?</h3>
+        <p class="card-tag">Fun</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we made a romantic playlist, what’s the #1 song that belongs on it — and why? fun">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #50</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we made a romantic playlist, what’s the #1 song that belongs on it — and why?</h3>
+        <p class="card-tag">Fun</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what does healthy conflict resolution look like to you? real-life">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #51</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What does healthy conflict resolution look like to you?</h3>
+        <p class="card-tag">Real-Life</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what have you given up trying to change about me? growth">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #52</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What have you given up trying to change about me?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s your favorite &amp;#x27;boring&amp;#x27; evening we&amp;#x27;ve spent together? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #53</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s your favorite &#x27;boring&#x27; evening we&#x27;ve spent together?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="when do you use humor to avoid real intimacy with me? intimacy">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #54</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">When do you use humor to avoid real intimacy with me?</h3>
+        <p class="card-tag">Intimacy</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what deeper discipline or rhythm would you love to build into our life? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #55</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What deeper discipline or rhythm would you love to build into our life?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="how can we make our kisses feel like the first time again? romance">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #56</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How can we make our kisses feel like the first time again?</h3>
+        <p class="card-tag">Romance</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="when have you felt most disappointed in who i&amp;#x27;ve become? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #57</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">When have you felt most disappointed in who I&#x27;ve become?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="when you see other couples, what makes you grateful for what we have? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #58</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">When you see other couples, what makes you grateful for what we have?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we could freeze one moment from our relationship to relive anytime, which would you choose? nostalgia">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #59</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could freeze one moment from our relationship to relive anytime, which would you choose?</h3>
+        <p class="card-tag">Nostalgia</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="when have you been tempted to give up on us? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #60</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">When have you been tempted to give up on us?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="when do you feel like i love an idea of you rather than the real you? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #61</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">When do you feel like I love an idea of you rather than the real you?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what does retirement look like in your dreams? vision">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #62</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What does retirement look like in your dreams?</h3>
+        <p class="card-tag">Vision</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what legacy do you want our love story to leave? vision">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #63</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What legacy do you want our love story to leave?</h3>
+        <p class="card-tag">Vision</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if our relationship had a soundtrack, what would the mood be right now? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #64</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If our relationship had a soundtrack, what would the mood be right now?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what’s one way i can better protect your peace this week? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #65</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s one way I can better protect your peace this week?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="what&amp;#x27;s your favorite season to experience with me and why? romance">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #66</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s your favorite season to experience with me and why?</h3>
+        <p class="card-tag">Romance</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you process big emotions, and how can i help? emotional support">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #67</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you process big emotions, and how can I help?</h3>
+        <p class="card-tag">Emotional Support</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what’s something you secretly wish we did more often — but haven’t brought up? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #68</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s something you secretly wish we did more often — but haven’t brought up?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we could have dinner with any couple from history, who would you choose? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #69</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could have dinner with any couple from history, who would you choose?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you recharge when you&amp;#x27;re emotionally drained? emotional support">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #70</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you recharge when you&#x27;re emotionally drained?</h3>
+        <p class="card-tag">Emotional Support</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we could have any animal as a pet that represents our relationship, what would it be? fun">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #71</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could have any animal as a pet that represents our relationship, what would it be?</h3>
+        <p class="card-tag">Fun</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you feel about the way we manage stress together? real-life">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #72</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you feel about the way we manage stress together?</h3>
+        <p class="card-tag">Real-Life</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="what’s something we used to do before kids that you miss? real-life">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #73</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s something we used to do before kids that you miss?</h3>
+        <p class="card-tag">Real-Life</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="how has our relationship made you smaller instead of bigger? growth">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #74</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How has our relationship made you smaller instead of bigger?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s something i&amp;#x27;m good at that i don&amp;#x27;t give myself enough credit for? affirmation">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #75</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s something I&#x27;m good at that I don&#x27;t give myself enough credit for?</h3>
+        <p class="card-tag">Affirmation</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we won a free renovation for one room, which would you pick? real-life">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #76</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we won a free renovation for one room, which would you pick?</h3>
+        <p class="card-tag">Real-Life</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what inside joke of ours never fails to make you smile? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #77</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What inside joke of ours never fails to make you smile?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what kind of emotional support do you wish i gave more? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #78</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What kind of emotional support do you wish I gave more?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="if desire had a color, what color would ours be? attraction">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #79</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If desire had a color, what color would ours be?</h3>
+        <p class="card-tag">Attraction</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s your favorite photo of us and why? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #80</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s your favorite photo of us and why?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what addiction or struggle are you battling in secret? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #81</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What addiction or struggle are you battling in secret?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="how has my success or failure affected your identity? growth">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #82</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How has my success or failure affected your identity?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what’s something you fear would make me love you less? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #83</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s something you fear would make me love you less?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="when do you find me most irresistibly attractive? attraction">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #84</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">When do you find me most irresistibly attractive?</h3>
+        <p class="card-tag">Attraction</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s your favorite way to be greeted when you come home? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #85</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s your favorite way to be greeted when you come home?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="what makes you feel most masculine/feminine in our relationship? attraction">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #86</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What makes you feel most masculine/feminine in our relationship?</h3>
+        <p class="card-tag">Attraction</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you experience grace in our relationship? growth">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #87</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you experience grace in our relationship?</h3>
+        <p class="card-tag">Growth</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="what’s a dream date we’ve never done — even if it’s a little crazy? romance">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #88</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s a dream date we’ve never done — even if it’s a little crazy?</h3>
+        <p class="card-tag">Romance</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what boundary do i consistently violate? real-life">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #89</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What boundary do I consistently violate?</h3>
+        <p class="card-tag">Real-Life</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="how has my love fallen short of what you need? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #90</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How has my love fallen short of what you need?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we opened a food truck together, what would we serve and what would we call it? fun">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #91</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we opened a food truck together, what would we serve and what would we call it?</h3>
+        <p class="card-tag">Fun</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="what&amp;#x27;s your favorite way we&amp;#x27;re different from each other? connection">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #92</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s your favorite way we&#x27;re different from each other?</h3>
+        <p class="card-tag">Connection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Medium" data-search="how do you want to navigate major health challenges together? real-life">
+      <header class="card-head" style="background:#4A5D7A;color:white;">
+        <span>CARD #93</span><span>💭 Meaningful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">How do you want to navigate major health challenges together?</h3>
+        <p class="card-tag">Real-Life</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we could swap one chore permanently, which would you want to trade? real-life">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #94</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could swap one chore permanently, which would you want to trade?</h3>
+        <p class="card-tag">Real-Life</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Light" data-search="if we could start any business together tomorrow, what would it be? vision">
+      <header class="card-head" style="background:#1AC6C5;color:#0C1A2E;">
+        <span>CARD #95</span><span>😊 Fun & Easy</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could start any business together tomorrow, what would it be?</h3>
+        <p class="card-tag">Vision</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what would you change about me if you could? vulnerability">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #96</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What would you change about me if you could?</h3>
+        <p class="card-tag">Vulnerability</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="what’s one non-sexual way you feel closest to me? intimacy">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #97</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s one non-sexual way you feel closest to me?</h3>
+        <p class="card-tag">Intimacy</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="if we could relive our honeymoon phase for a day, what would you want to do? romance">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #98</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">If we could relive our honeymoon phase for a day, what would you want to do?</h3>
+        <p class="card-tag">Romance</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Deep" data-search="what do you need forgiveness for that you&amp;#x27;ve never asked? reflection">
+      <header class="card-head" style="background:#0C1A2E;color:white;">
+        <span>CARD #99</span><span>💜 Deep & Vulnerable</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What do you need forgiveness for that you&#x27;ve never asked?</h3>
+        <p class="card-tag">Reflection</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="what&amp;#x27;s your favorite text or note i&amp;#x27;ve ever sent you? romance">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #100</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What&#x27;s your favorite text or note I&#x27;ve ever sent you?</h3>
+        <p class="card-tag">Romance</p>
+      </div>
+    </article>
+<article class="card" data-intensity="Spicy" data-search="what’s a place you’ve always wanted to take me — and why? romance">
+      <header class="card-head" style="background:#FF8C94;color:white;">
+        <span>CARD #101</span><span>😘 Flirty & Playful</span>
+      </header>
+      <div class="card-body">
+        <h3 class="card-q">What’s a place you’ve always wanted to take me — and why?</h3>
+        <p class="card-tag">Romance</p>
+      </div>
+    </article>
+</section>
+<footer class="footer">Maxed Out Conversation Cards • Part of the Activated Marriage Toolkit<br><a href="https://maxedoutman.com">MaxedOutMan.com</a></footer>
+</body>
+</html>
